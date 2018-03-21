@@ -10,6 +10,26 @@ TRIGGER_CHECKPOINT = {
 	{ Vector( -9392, -1624, -64 ), Vector( -8848, -1368, 20 ) }
 }
 
+RESPAWNABLE_ITEMS = {
+	[ "item_ammo_357" ] = true,
+	[ "item_ammo_357_large" ] = true,
+	[ "item_ammo_ar2" ] = true,
+	[ "item_ammo_ar2_altfire" ] = true,
+	[ "item_ammo_ar2_large" ] = true,
+	[ "item_ammo_crossbow" ] = true,
+	[ "item_ammo_smg1" ] = true,
+	[ "item_ammo_smg1_grenade" ] = true,
+	[ "item_ammo_smg1_large" ] = true,
+	[ "item_battery" ] = true,
+	[ "item_box_buckshot" ] = true,
+	[ "item_healthkit" ] = true,
+	[ "item_healthvial" ] = true,
+	[ "item_rpg_round" ] = true,
+	[ "weapon_frag" ] = true
+}
+
+RESPAWNING_ITEMS = {}
+
 
 -- Player spawns
 function HL2C_PlayerSpawn( ply )
@@ -38,6 +58,44 @@ end
 hook.Add( "PlayerSpawn", "HL2C_PlayerSpawn", HL2C_PlayerSpawn )
 
 
+-- Entity is being removed
+function HL2C_EntityRemoved( ent )
+
+	-- Store respawnable items in a respawning list
+	if ( ent.isRespawnable ) then
+	
+		-- Store the variables needed in local variables
+		local entIndex = ent:EntIndex()
+		local entClass = ent:GetClass()
+		local entOriginalAng = ent.originalAng
+		local entOriginalPos = ent.originalPos
+		local entSpawnFlags = ent.spawnFlags
+	
+		-- Insert the EntIndex first
+		table.insert( RESPAWNING_ITEMS, entIndex )
+	
+		-- Add details to the table
+		for k, v in pairs( RESPAWNING_ITEMS ) do
+		
+			if ( v == entIndex ) then
+			
+				RESPAWNING_ITEMS[ k ] = {}
+				RESPAWNING_ITEMS[ k ][ "Class" ] = entClass
+				RESPAWNING_ITEMS[ k ][ "Angles" ] = entOriginalAng
+				RESPAWNING_ITEMS[ k ][ "Position" ] = entOriginalPos
+				RESPAWNING_ITEMS[ k ][ "SpawnFlags" ] = entSpawnFlags
+				RESPAWNING_ITEMS[ k ][ "RespawnTime" ] = CurTime() + 10
+			
+			end
+		
+		end
+	
+	end
+
+end
+hook.Add( "EntityRemoved", "HL2C_EntityRemoved", HL2C_EntityRemoved )
+
+
 -- Initialize entities
 function HL2C_InitPostEntity()
 
@@ -60,8 +118,75 @@ function HL2C_InitPostEntity()
 	-- Remove the garg vent
 	ents.FindByName( "garg01_vent" )[ 1 ]:Fire( "SetHealth", "0" )
 
+	-- Get respawnable items
+	for _, ent in pairs( ents.GetAll() ) do
+	
+		if ( ent:CreatedByMap() && RESPAWNABLE_ITEMS[ ent:GetClass() ] ) then
+		
+			ent.isRespawnable = true
+			ent.originalAng = ent:GetAngles()
+			ent.originalPos = ent:GetPos()
+			ent.spawnFlags = ent:GetSpawnFlags()
+		
+		end
+	
+	end
+
 end
 hook.Add( "InitPostEntity", "HL2C_InitPostEntity", HL2C_InitPostEntity )
+
+
+-- Called every frame/tick
+function HL2C_Think()
+
+	-- Respawn items in the table
+	for k, v in pairs( RESPAWNING_ITEMS ) do
+	
+		-- Only respawn when the time is ready
+		if ( RESPAWNING_ITEMS[ k ] && ( RESPAWNING_ITEMS[ k ][ "RespawnTime" ] < CurTime() ) ) then
+		
+			-- Create the item
+			local respawnItem = ents.Create( RESPAWNING_ITEMS[ k ][ "Class" ] )
+			respawnItem.isRespawnable = true
+		
+			-- Set up the item
+			for k2, v2 in pairs( RESPAWNING_ITEMS[ k ] ) do
+			
+				if ( k2 == "Angles" ) then
+				
+					respawnItem.originalAng = v2
+					respawnItem:SetAngles( v2 )
+				
+				elseif ( k2 == "Position" ) then
+				
+					respawnItem.originalPos = v2
+					respawnItem:SetPos( v2 )
+				
+				elseif ( k2 == "SpawnFlags" ) then
+				
+					respawnItem.spawnFlags = v2
+					respawnItem:SetKeyValue( "AddOutput", "spawnflags "..v2 )
+				
+				end
+			
+			end
+		
+			-- Spawn the item
+			respawnItem:Spawn()
+			respawnItem:Activate()
+		
+			-- Play a sound
+			respawnItem:EmitSound( "AlyxEmp.Charge" )
+		
+			-- Remove the item from the table
+			table.remove( RESPAWNING_ITEMS, k )
+		
+		end
+	
+	end
+
+end
+hook.Add( "Think", "HL2C_Think", HL2C_Think )
 
 
 -- Accept entity input
