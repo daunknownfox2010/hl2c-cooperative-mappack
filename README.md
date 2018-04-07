@@ -13,4 +13,5 @@ Provides additional map support for the Half-Life 2: Campaign gamemode. Currentl
 - `map_select_v2`
 - `syn_apprehension`
 - `syn_fogisland`
+- `sp_sawlife2`
 - `tbr_coop_red_keops_v4`
