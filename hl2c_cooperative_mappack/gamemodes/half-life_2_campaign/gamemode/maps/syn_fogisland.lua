@@ -1,3 +1,5 @@
+RESET_PL_INFO = true
+
 INFO_PLAYER_SPAWN = { Vector( 135, 3453, 323 ), 0 }
 
 NEXT_MAP = "syn_fogisland"	-- Change this for your server

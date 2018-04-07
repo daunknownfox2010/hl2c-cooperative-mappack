@@ -1,3 +1,5 @@
+RESET_PL_INFO = true
+
 INFO_PLAYER_SPAWN = { Vector( 1280, 0, 512 ), 180 }
 
 NEXT_MAP = "gm_ghosthunt_3"	-- Change this for your server

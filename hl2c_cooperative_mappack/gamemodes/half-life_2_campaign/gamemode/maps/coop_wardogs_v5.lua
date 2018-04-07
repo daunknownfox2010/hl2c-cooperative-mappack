@@ -1,33 +1,22 @@
 RESET_PL_INFO = true
 
-INFO_PLAYER_SPAWN = { Vector( -10744, -505, 2020 ), 270 }
+INFO_PLAYER_SPAWN = { Vector( -1984, 192, -15300 ), 90 }
 
-NEXT_MAP = "syn_apprehension"	-- Change this for your server
+NEXT_MAP = "coop_wardogs_v5"	-- Change this for your server
 
 NEXT_MAP_TIME = 10
-
-TRIGGER_CHECKPOINT = {
-	{ Vector( -9412, 1264, 64 ), Vector( -8976, 1360, 140 ) },
-	{ Vector( -8016, -1216, 336 ), Vector( -7792, -1120, 400 ) },
-	{ Vector( -9392, -1624, -64 ), Vector( -8848, -1368, 20 ) }
-}
 
 RESPAWNABLE_ITEMS = {
 	[ "item_ammo_357" ] = true,
 	[ "item_ammo_357_large" ] = true,
 	[ "item_ammo_ar2" ] = true,
-	[ "item_ammo_ar2_altfire" ] = true,
-	[ "item_ammo_ar2_large" ] = true,
 	[ "item_ammo_crossbow" ] = true,
+	[ "item_ammo_pistol" ] = true,
 	[ "item_ammo_smg1" ] = true,
 	[ "item_ammo_smg1_grenade" ] = true,
-	[ "item_ammo_smg1_large" ] = true,
 	[ "item_battery" ] = true,
 	[ "item_box_buckshot" ] = true,
-	[ "item_healthkit" ] = true,
-	[ "item_healthvial" ] = true,
-	[ "item_rpg_round" ] = true,
-	[ "weapon_frag" ] = true
+	[ "item_healthkit" ] = true
 }
 
 RESPAWNING_ITEMS = {}
@@ -37,7 +26,7 @@ RESPAWNING_ITEMS = {}
 function HL2C_PlayerSpawn( ply )
 
 	-- Update Gamemode Name on client
-	ply:SendLua( "GAMEMODE.Name = \"[HL2C] Synergy Co-operative\"" )
+	ply:SendLua( "GAMEMODE.Name = \"[HL2C] Co-operative\"" )
 
 	-- Update next map time on client
 	ply:SendLua( "NEXT_MAP_TIME = 10" )
@@ -48,13 +37,20 @@ function HL2C_PlayerSpawn( ply )
 	-- Weapons
 	ply:Give( "weapon_crowbar" )
 	ply:Give( "weapon_pistol" )
+	ply:Give( "weapon_357" )
 	ply:Give( "weapon_smg1" )
+	ply:Give( "weapon_shotgun" )
+	ply:Give( "weapon_crossbow" )
 	ply:Give( "weapon_frag" )
 	ply:Give( "weapon_medkit" )
 
 	-- Ammo
-	ply:GiveAmmo( 60, game.GetAmmoID( "Pistol" ) )
-	ply:GiveAmmo( 135, game.GetAmmoID( "SMG1" ) )
+	ply:GiveAmmo( 140, game.GetAmmoID( "Pistol" ) )
+	ply:GiveAmmo( 20, game.GetAmmoID( "357" ) )
+	ply:GiveAmmo( 225, game.GetAmmoID( "SMG1" ) )
+	ply:GiveAmmo( 1, game.GetAmmoID( "SMG1_Grenade" ) )
+	ply:GiveAmmo( 40, game.GetAmmoID( "Buckshot" ) )
+	ply:GiveAmmo( 10, game.GetAmmoID( "XBowBolt" ) )
 
 end
 hook.Add( "PlayerSpawn", "HL2C_PlayerSpawn", HL2C_PlayerSpawn )
@@ -102,13 +98,41 @@ hook.Add( "EntityRemoved", "HL2C_EntityRemoved", HL2C_EntityRemoved )
 function HL2C_InitPostEntity()
 
 	-- Gamemode Name will change here
-	GAMEMODE.Name = "[HL2C] Synergy Co-operative"
+	GAMEMODE.Name = "[HL2C] Co-operative"
 
 	-- Flashlight doesn't drain AUX
 	flashlightDrainsAUX = false
 
 	-- Remove vortigaunts from godlike npcs
 	table.RemoveByValue( GODLIKE_NPCS, "npc_vortigaunt" )
+
+	-- Remove info_player_combine entities
+	for _, ent in pairs( ents.FindByClass( "info_player_combine" ) ) do
+	
+		ent:Remove()
+	
+	end
+
+	-- Remove info_player_deathmatch entities
+	for _, ent in pairs( ents.FindByClass( "info_player_deathmatch" ) ) do
+	
+		ent:Remove()
+	
+	end
+
+	-- Remove info_player_rebel entities
+	for _, ent in pairs( ents.FindByClass( "info_player_rebel" ) ) do
+	
+		ent:Remove()
+	
+	end
+
+	-- Remove player_weaponstrip entities
+	for _, ent in pairs( ents.FindByClass( "player_weaponstrip" ) ) do
+	
+		ent:Remove()
+	
+	end
 
 	-- Remove game_player_equip entities
 	for _, ent in pairs( ents.FindByClass( "game_player_equip" ) ) do
@@ -117,8 +141,45 @@ function HL2C_InitPostEntity()
 	
 	end
 
-	-- Remove the garg vent
-	ents.FindByName( "garg01_vent" )[ 1 ]:Fire( "SetHealth", "0" )
+	-- Remove point_servercommand entities
+	for _, ent in pairs( ents.FindByClass( "point_servercommand" ) ) do
+	
+		ent:Remove()
+	
+	end
+
+	-- Remove game_score entities
+	for _, ent in pairs( ents.FindByClass( "game_score" ) ) do
+	
+		ent:Remove()
+	
+	end
+
+	-- Remove makerebel
+	for _, ent in pairs( ents.FindByName( "makerebel" ) ) do
+	
+		ent:Remove()
+	
+	end
+
+	-- Remove client
+	for _, ent in pairs( ents.FindByName( "client" ) ) do
+	
+		ent:Remove()
+	
+	end
+
+	-- Create an AR2
+	local weaponAR2 = ents.Create( "weapon_ar2" )
+	weaponAR2:SetPos( Vector( -207, 0, -13435 ) )
+	weaponAR2:Spawn()
+	weaponAR2:Activate()
+
+	-- Create an RPG
+	local weaponRPG = ents.Create( "weapon_rpg" )
+	weaponRPG:SetPos( Vector( -3057, -382, -13655 ) )
+	weaponRPG:Spawn()
+	weaponRPG:Activate()
 
 	-- Get respawnable items
 	for _, ent in pairs( ents.GetAll() ) do

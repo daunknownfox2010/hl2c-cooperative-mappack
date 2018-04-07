@@ -1,33 +1,16 @@
 RESET_PL_INFO = true
 
-INFO_PLAYER_SPAWN = { Vector( -10744, -505, 2020 ), 270 }
+INFO_PLAYER_SPAWN = { Vector( -2862, -1968, 848 ), 0 }
 
-NEXT_MAP = "syn_apprehension"	-- Change this for your server
+NEXT_MAP = "tbr_coop_red_keops_v4"	-- Change this for your server
 
 NEXT_MAP_TIME = 10
 
-TRIGGER_CHECKPOINT = {
-	{ Vector( -9412, 1264, 64 ), Vector( -8976, 1360, 140 ) },
-	{ Vector( -8016, -1216, 336 ), Vector( -7792, -1120, 400 ) },
-	{ Vector( -9392, -1624, -64 ), Vector( -8848, -1368, 20 ) }
-}
-
 RESPAWNABLE_ITEMS = {
 	[ "item_ammo_357" ] = true,
-	[ "item_ammo_357_large" ] = true,
-	[ "item_ammo_ar2" ] = true,
-	[ "item_ammo_ar2_altfire" ] = true,
-	[ "item_ammo_ar2_large" ] = true,
 	[ "item_ammo_crossbow" ] = true,
-	[ "item_ammo_smg1" ] = true,
 	[ "item_ammo_smg1_grenade" ] = true,
-	[ "item_ammo_smg1_large" ] = true,
-	[ "item_battery" ] = true,
-	[ "item_box_buckshot" ] = true,
-	[ "item_healthkit" ] = true,
-	[ "item_healthvial" ] = true,
-	[ "item_rpg_round" ] = true,
-	[ "weapon_frag" ] = true
+	[ "item_box_buckshot" ] = true
 }
 
 RESPAWNING_ITEMS = {}
@@ -37,24 +20,13 @@ RESPAWNING_ITEMS = {}
 function HL2C_PlayerSpawn( ply )
 
 	-- Update Gamemode Name on client
-	ply:SendLua( "GAMEMODE.Name = \"[HL2C] Synergy Co-operative\"" )
+	ply:SendLua( "GAMEMODE.Name = \"[HL2C] Co-operative\"" )
 
 	-- Update next map time on client
 	ply:SendLua( "NEXT_MAP_TIME = 10" )
 
 	-- Remove vortigaunts from godlike npcs on player
 	ply:SendLua( "table.RemoveByValue( GODLIKE_NPCS, \"npc_vortigaunt\" )" )
-
-	-- Weapons
-	ply:Give( "weapon_crowbar" )
-	ply:Give( "weapon_pistol" )
-	ply:Give( "weapon_smg1" )
-	ply:Give( "weapon_frag" )
-	ply:Give( "weapon_medkit" )
-
-	-- Ammo
-	ply:GiveAmmo( 60, game.GetAmmoID( "Pistol" ) )
-	ply:GiveAmmo( 135, game.GetAmmoID( "SMG1" ) )
 
 end
 hook.Add( "PlayerSpawn", "HL2C_PlayerSpawn", HL2C_PlayerSpawn )
@@ -102,7 +74,7 @@ hook.Add( "EntityRemoved", "HL2C_EntityRemoved", HL2C_EntityRemoved )
 function HL2C_InitPostEntity()
 
 	-- Gamemode Name will change here
-	GAMEMODE.Name = "[HL2C] Synergy Co-operative"
+	GAMEMODE.Name = "[HL2C] Co-operative"
 
 	-- Flashlight doesn't drain AUX
 	flashlightDrainsAUX = false
@@ -110,15 +82,60 @@ function HL2C_InitPostEntity()
 	-- Remove vortigaunts from godlike npcs
 	table.RemoveByValue( GODLIKE_NPCS, "npc_vortigaunt" )
 
-	-- Remove game_player_equip entities
-	for _, ent in pairs( ents.FindByClass( "game_player_equip" ) ) do
+	-- Remove info_player_combine entities
+	for _, ent in pairs( ents.FindByClass( "info_player_combine" ) ) do
 	
 		ent:Remove()
 	
 	end
 
-	-- Remove the garg vent
-	ents.FindByName( "garg01_vent" )[ 1 ]:Fire( "SetHealth", "0" )
+	-- Remove info_player_deathmatch entities
+	for _, ent in pairs( ents.FindByClass( "info_player_deathmatch" ) ) do
+	
+		ent:Remove()
+	
+	end
+
+	-- Remove info_player_rebel entities
+	for _, ent in pairs( ents.FindByClass( "info_player_rebel" ) ) do
+	
+		ent:Remove()
+	
+	end
+
+	-- Remove trigger_weapon_strip entities
+	for _, ent in pairs( ents.FindByClass( "trigger_weapon_strip" ) ) do
+	
+		ent:Remove()
+	
+	end
+
+	-- Remove point_clientcommand entities
+	for _, ent in pairs( ents.FindByClass( "point_clientcommand" ) ) do
+	
+		ent:Remove()
+	
+	end
+
+	-- Remove point_servercommand entities
+	for _, ent in pairs( ents.FindByClass( "point_servercommand" ) ) do
+	
+		ent:Remove()
+	
+	end
+
+	-- Remove game_score entities
+	for _, ent in pairs( ents.FindByClass( "game_score" ) ) do
+	
+		ent:Remove()
+	
+	end
+
+	-- Create a medkit
+	local weaponMedkit = ents.Create( "weapon_medkit" )
+	weaponMedkit:SetPos( Vector( -2720, -2127, 115 ) )
+	weaponMedkit:Spawn()
+	weaponMedkit:Activate()
 
 	-- Get respawnable items
 	for _, ent in pairs( ents.GetAll() ) do

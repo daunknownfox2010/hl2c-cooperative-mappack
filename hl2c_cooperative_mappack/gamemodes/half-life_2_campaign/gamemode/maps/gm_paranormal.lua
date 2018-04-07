@@ -1,3 +1,5 @@
+RESET_PL_INFO = true
+
 INFO_PLAYER_SPAWN = { Vector( -1256, -480, 1 ), 180 }
 
 NEXT_MAP = "gm_paranormal"	-- Change this for your server
