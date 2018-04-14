@@ -8,7 +8,7 @@ NEXT_MAP_TIME = 10
 
 
 -- Player spawns
-function HL2C_PlayerSpawn( ply )
+function hl2cPlayerSpawn( ply )
 
 	-- Update Gamemode Name on client
 	ply:SendLua( "GAMEMODE.Name = \"[HL2C] Co-operative\"" )
@@ -43,11 +43,11 @@ function HL2C_PlayerSpawn( ply )
 	ply:GiveAmmo( 6, game.GetAmmoID( "XBowBolt" ) )
 
 end
-hook.Add( "PlayerSpawn", "HL2C_PlayerSpawn", HL2C_PlayerSpawn )
+hook.Add( "PlayerSpawn", "hl2cPlayerSpawn", hl2cPlayerSpawn )
 
 
 -- Initialize entities
-function HL2C_InitPostEntity()
+function hl2cInitPostEntity()
 
 	-- Gamemode Name will change here
 	GAMEMODE.Name = "[HL2C] Co-operative"
@@ -130,11 +130,11 @@ function HL2C_InitPostEntity()
 	relationshipTimer:Activate()
 
 end
-hook.Add( "InitPostEntity", "HL2C_InitPostEntity", HL2C_InitPostEntity )
+hook.Add( "InitPostEntity", "hl2cInitPostEntity", hl2cInitPostEntity )
 
 
 -- Accept entity input
-function HL2C_AcceptInput( ent, input )
+function hl2cAcceptInput( ent, input )
 
 	-- Game end will end the game
 	if ( ent:GetClass() == "game_end" && ( string.lower( input ) == "endgame" ) ) then
@@ -144,4 +144,4 @@ function HL2C_AcceptInput( ent, input )
 	end
 
 end
-hook.Add( "AcceptInput", "HL2C_AcceptInput", HL2C_AcceptInput )
+hook.Add( "AcceptInput", "hl2cAcceptInput", hl2cAcceptInput )

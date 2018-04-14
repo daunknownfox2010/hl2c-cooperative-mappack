@@ -8,7 +8,7 @@ NEXT_MAP_TIME = 0
 
 
 -- Player spawns
-function HL2C_PlayerSpawn( ply )
+function hl2cPlayerSpawn( ply )
 
 	-- Update Gamemode Name on client
 	ply:SendLua( "GAMEMODE.Name = \"[HL2C] Co-operative\"" )
@@ -20,11 +20,11 @@ function HL2C_PlayerSpawn( ply )
 	ply:Give( "weapon_crowbar" )
 
 end
-hook.Add( "PlayerSpawn", "HL2C_PlayerSpawn", HL2C_PlayerSpawn )
+hook.Add( "PlayerSpawn", "hl2cPlayerSpawn", hl2cPlayerSpawn )
 
 
 -- Initialize entities
-function HL2C_InitPostEntity()
+function hl2cInitPostEntity()
 
 	-- Gamemode Name will change here
 	GAMEMODE.Name = "[HL2C] Co-operative"
@@ -35,15 +35,15 @@ function HL2C_InitPostEntity()
 	-- Map 1
 	--ents.FindByName( "wall_map01" )[ 1 ]:Fire( "Disable" )
 	--ents.FindByName( "door_map01" )[ 1 ]:Fire( "SetHealth", "1000" )
-	--ents.FindByName( "text_map01" )[ 1 ]:Fire( "AddOutput", "message coop_123module_v2" )
-	--ents.FindByName( "trigger_map01" )[ 1 ]:Fire( "AddOutput", "OnTrigger server,Command,changelevel coop_123module_v2,5,1" )
+	--ents.FindByName( "text_map01" )[ 1 ]:Fire( "AddOutput", "message d1_trainstation_01" )
+	--ents.FindByName( "trigger_map01" )[ 1 ]:Fire( "AddOutput", "OnTrigger server,Command,changelevel d1_trainstation_01,5,1" )
 
 end
-hook.Add( "InitPostEntity", "HL2C_InitPostEntity", HL2C_InitPostEntity )
+hook.Add( "InitPostEntity", "hl2cInitPostEntity", hl2cInitPostEntity )
 
 
 -- Accept entity input
-function HL2C_AcceptInput( ent, input, activator, caller, value )
+function hl2cAcceptInput( ent, input, activator, caller, value )
 
 	-- Allow point_servercommand
 	if ( ent:GetClass() == "point_servercommand" && ( string.lower( input ) == "command" ) ) then
@@ -56,4 +56,4 @@ function HL2C_AcceptInput( ent, input, activator, caller, value )
 	end
 
 end
-hook.Add( "AcceptInput", "HL2C_AcceptInput", HL2C_AcceptInput )
+hook.Add( "AcceptInput", "hl2cAcceptInput", hl2cAcceptInput )

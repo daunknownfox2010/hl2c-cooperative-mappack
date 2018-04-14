@@ -6,7 +6,7 @@ NEXT_MAP = "gm_paranormal"	-- Change this for your server
 
 
 -- Player spawns
-function HL2C_PlayerSpawn( ply )
+function hl2cPlayerSpawn( ply )
 
 	-- Update Gamemode Name on client
 	ply:SendLua( "GAMEMODE.Name = \"[HL2C] Paranormal\"" )
@@ -16,11 +16,11 @@ function HL2C_PlayerSpawn( ply )
 	ply:Give( "weapon_physcannon" )
 
 end
-hook.Add( "PlayerSpawn", "HL2C_PlayerSpawn", HL2C_PlayerSpawn )
+hook.Add( "PlayerSpawn", "hl2cPlayerSpawn", hl2cPlayerSpawn )
 
 
 -- Initialize entities
-function HL2C_InitPostEntity()
+function hl2cInitPostEntity()
 
 	-- Gamemode Name will change here
 	GAMEMODE.Name = "[HL2C] Paranormal"
@@ -29,4 +29,4 @@ function HL2C_InitPostEntity()
 	flashlightDrainsAUX = false
 
 end
-hook.Add( "InitPostEntity", "HL2C_InitPostEntity", HL2C_InitPostEntity )
+hook.Add( "InitPostEntity", "hl2cInitPostEntity", hl2cInitPostEntity )

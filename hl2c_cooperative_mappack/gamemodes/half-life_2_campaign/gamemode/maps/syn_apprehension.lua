@@ -34,7 +34,7 @@ RESPAWNING_ITEMS = {}
 
 
 -- Player spawns
-function HL2C_PlayerSpawn( ply )
+function hl2cPlayerSpawn( ply )
 
 	-- Update Gamemode Name on client
 	ply:SendLua( "GAMEMODE.Name = \"[HL2C] Synergy Co-operative\"" )
@@ -57,11 +57,11 @@ function HL2C_PlayerSpawn( ply )
 	ply:GiveAmmo( 135, game.GetAmmoID( "SMG1" ) )
 
 end
-hook.Add( "PlayerSpawn", "HL2C_PlayerSpawn", HL2C_PlayerSpawn )
+hook.Add( "PlayerSpawn", "hl2cPlayerSpawn", hl2cPlayerSpawn )
 
 
 -- Entity is being removed
-function HL2C_EntityRemoved( ent )
+function hl2cEntityRemoved( ent )
 
 	-- Store respawnable items in a respawning list
 	if ( ent.isRespawnable ) then
@@ -95,11 +95,11 @@ function HL2C_EntityRemoved( ent )
 	end
 
 end
-hook.Add( "EntityRemoved", "HL2C_EntityRemoved", HL2C_EntityRemoved )
+hook.Add( "EntityRemoved", "hl2cEntityRemoved", hl2cEntityRemoved )
 
 
 -- Initialize entities
-function HL2C_InitPostEntity()
+function hl2cInitPostEntity()
 
 	-- Gamemode Name will change here
 	GAMEMODE.Name = "[HL2C] Synergy Co-operative"
@@ -135,11 +135,11 @@ function HL2C_InitPostEntity()
 	end
 
 end
-hook.Add( "InitPostEntity", "HL2C_InitPostEntity", HL2C_InitPostEntity )
+hook.Add( "InitPostEntity", "hl2cInitPostEntity", hl2cInitPostEntity )
 
 
 -- Called every frame/tick
-function HL2C_Think()
+function hl2cThink()
 
 	-- Respawn items in the table
 	for k, v in pairs( RESPAWNING_ITEMS ) do
@@ -188,11 +188,11 @@ function HL2C_Think()
 	end
 
 end
-hook.Add( "Think", "HL2C_Think", HL2C_Think )
+hook.Add( "Think", "hl2cThink", hl2cThink )
 
 
 -- Accept entity input
-function HL2C_AcceptInput( ent, input )
+function hl2cAcceptInput( ent, input )
 
 	-- Game end will end the game
 	if ( ent:GetClass() == "game_end" && ( string.lower( input ) == "endgame" ) ) then
@@ -202,4 +202,4 @@ function HL2C_AcceptInput( ent, input )
 	end
 
 end
-hook.Add( "AcceptInput", "HL2C_AcceptInput", HL2C_AcceptInput )
+hook.Add( "AcceptInput", "hl2cAcceptInput", hl2cAcceptInput )
