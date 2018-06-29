@@ -6,6 +6,7 @@ Provides additional map support for the Half-Life 2: Campaign gamemode. Currentl
 - `coop_epicycle_v4`
 - `coop_swampthing_v6`
 - `coop_wardogs_v5`
+- `gm_apartment_raid_v1`
 - `gm_ghosthunt`
 - `gm_ghosthunt_2`
 - `gm_ghosthunt_3`
