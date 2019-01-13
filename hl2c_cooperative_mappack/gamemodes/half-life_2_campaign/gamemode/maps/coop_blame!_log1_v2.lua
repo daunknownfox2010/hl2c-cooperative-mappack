@@ -6,6 +6,8 @@ NEXT_MAP = "coop_blame!_log2_v2"
 
 NEXT_MAP_TIME = 0
 
+FORCE_PLAYER_RESPAWNING = true
+
 RESPAWNABLE_ITEMS = {
 	[ "item_ammo_357" ] = true,
 	[ "item_ammo_357_large" ] = true,
@@ -96,7 +98,7 @@ hook.Add( "EntityRemoved", "hl2cEntityRemoved", hl2cEntityRemoved )
 
 
 -- Initialize entities
-function hl2cInitPostEntity()
+function hl2cMapEdit()
 
 	-- Gamemode Name will change here
 	GAMEMODE.Name = "[HL2C] Co-operative"
@@ -233,7 +235,7 @@ function hl2cInitPostEntity()
 	end
 
 end
-hook.Add( "InitPostEntity", "hl2cInitPostEntity", hl2cInitPostEntity )
+hook.Add( "MapEdit", "hl2cMapEdit", hl2cMapEdit )
 
 
 -- Called every frame/tick

@@ -6,6 +6,8 @@ NEXT_MAP = "map_select_v2"
 
 NEXT_MAP_TIME = 0
 
+FORCE_PLAYER_RESPAWNING = true
+
 
 -- Player spawns
 function hl2cPlayerSpawn( ply )
@@ -24,7 +26,10 @@ hook.Add( "PlayerSpawn", "hl2cPlayerSpawn", hl2cPlayerSpawn )
 
 
 -- Initialize entities
-function hl2cInitPostEntity()
+function hl2cMapEdit()
+
+	-- Make players invulnerable
+	game.SetGlobalState( "gordon_invulnerable", GLOBAL_ON )
 
 	-- Gamemode Name will change here
 	GAMEMODE.Name = "[HL2C] Co-operative"
@@ -33,13 +38,13 @@ function hl2cInitPostEntity()
 	flashlightDrainsAUX = false
 
 	-- Map 1
-	--ents.FindByName( "wall_map01" )[ 1 ]:Fire( "Disable" )
-	--ents.FindByName( "door_map01" )[ 1 ]:Fire( "SetHealth", "1000" )
-	--ents.FindByName( "text_map01" )[ 1 ]:Fire( "AddOutput", "message d1_trainstation_01" )
-	--ents.FindByName( "trigger_map01" )[ 1 ]:Fire( "AddOutput", "OnTrigger server,Command,changelevel d1_trainstation_01,5,1" )
+	ents.FindByName( "wall_map01" )[ 1 ]:Fire( "Disable" )
+	ents.FindByName( "door_map01" )[ 1 ]:Fire( "SetHealth", "1000" )
+	ents.FindByName( "text_map01" )[ 1 ]:Fire( "AddOutput", "message d1_trainstation_01" )
+	ents.FindByName( "trigger_map01" )[ 1 ]:Fire( "AddOutput", "OnTrigger server,Command,changelevel d1_trainstation_01,5,1" )
 
 end
-hook.Add( "InitPostEntity", "hl2cInitPostEntity", hl2cInitPostEntity )
+hook.Add( "MapEdit", "hl2cMapEdit", hl2cMapEdit )
 
 
 -- Accept entity input
@@ -52,6 +57,8 @@ function hl2cAcceptInput( ent, input, activator, caller, value )
 	
 		NEXT_MAP = changeToLevel
 		GAMEMODE:NextMap()
+	
+		game.SetGlobalState( "gordon_invulnerable", GLOBAL_DEAD )
 	
 	end
 

@@ -2,9 +2,11 @@ RESET_PL_INFO = true
 
 INFO_PLAYER_SPAWN = { Vector( -594, -194, 2 ), 249 }
 
-NEXT_MAP = "gm_apartment_raid_v1"    -- Change this for your server
+NEXT_MAP = "map_select_v2" -- Default to map select, feel free to change it
 
 NEXT_MAP_TIME = 10
+
+FORCE_PLAYER_RESPAWNING = true
 
 RESPAWNING_ITEMS = {}
 
@@ -80,7 +82,7 @@ hook.Add( "EntityRemoved", "hl2cEntityRemoved", hl2cEntityRemoved )
 
 
 -- Initialize entities
-function hl2cInitPostEntity()
+function hl2cMapEdit()
 
 	-- Gamemode Name will change here
 	GAMEMODE.Name = "[HL2C] Co-operative"
@@ -150,7 +152,7 @@ function hl2cInitPostEntity()
 	buckshotBox.spawnFlags = buckshotBox:GetSpawnFlags()
 
 end
-hook.Add( "InitPostEntity", "hl2cInitPostEntity", hl2cInitPostEntity )
+hook.Add( "MapEdit", "hl2cMapEdit", hl2cMapEdit )
 
 
 -- Called every frame/tick

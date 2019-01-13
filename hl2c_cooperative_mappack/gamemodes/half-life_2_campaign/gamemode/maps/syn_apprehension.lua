@@ -2,7 +2,7 @@ RESET_PL_INFO = true
 
 INFO_PLAYER_SPAWN = { Vector( -10744, -505, 2020 ), 270 }
 
-NEXT_MAP = "syn_apprehension"	-- Change this for your server
+NEXT_MAP = "map_select_v2" -- Default to map select, feel free to change it
 
 NEXT_MAP_TIME = 10
 
@@ -11,6 +11,8 @@ TRIGGER_CHECKPOINT = {
 	{ Vector( -8016, -1216, 336 ), Vector( -7792, -1120, 400 ) },
 	{ Vector( -9392, -1624, -64 ), Vector( -8848, -1368, 20 ) }
 }
+
+FORCE_PLAYER_RESPAWNING = true
 
 RESPAWNABLE_ITEMS = {
 	[ "item_ammo_357" ] = true,
@@ -99,7 +101,7 @@ hook.Add( "EntityRemoved", "hl2cEntityRemoved", hl2cEntityRemoved )
 
 
 -- Initialize entities
-function hl2cInitPostEntity()
+function hl2cMapEdit()
 
 	-- Gamemode Name will change here
 	GAMEMODE.Name = "[HL2C] Synergy Co-operative"
@@ -135,7 +137,7 @@ function hl2cInitPostEntity()
 	end
 
 end
-hook.Add( "InitPostEntity", "hl2cInitPostEntity", hl2cInitPostEntity )
+hook.Add( "MapEdit", "hl2cMapEdit", hl2cMapEdit )
 
 
 -- Called every frame/tick

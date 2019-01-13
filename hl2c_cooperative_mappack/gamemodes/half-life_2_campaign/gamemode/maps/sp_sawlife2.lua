@@ -2,9 +2,11 @@ RESET_PL_INFO = true
 
 INFO_PLAYER_SPAWN = { Vector( -889, 8, 20 ), 90 }
 
-NEXT_MAP = "sp_sawlife2"    -- Change this for your server
+NEXT_MAP = "map_select_v2" -- Default to map select, feel free to change it
 
 NEXT_MAP_TIME = 10
+
+FORCE_PLAYER_RESPAWNING = true
 
 RESPAWNABLE_ITEMS = {
 	[ "item_ammo_pistol" ] = true
@@ -65,7 +67,7 @@ hook.Add( "EntityRemoved", "hl2cEntityRemoved", hl2cEntityRemoved )
 
 
 -- Initialize entities
-function hl2cInitPostEntity()
+function hl2cMapEdit()
 
 	-- Gamemode Name will change here
 	GAMEMODE.Name = "[HL2C] Co-operative"
@@ -95,7 +97,7 @@ function hl2cInitPostEntity()
 	end
 
 end
-hook.Add( "InitPostEntity", "hl2cInitPostEntity", hl2cInitPostEntity )
+hook.Add( "MapEdit", "hl2cMapEdit", hl2cMapEdit )
 
 
 -- Called every frame/tick

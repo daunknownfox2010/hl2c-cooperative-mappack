@@ -2,9 +2,11 @@ RESET_PL_INFO = true
 
 INFO_PLAYER_SPAWN = { Vector( 64, -15040, -15812 ), 90 }
 
-NEXT_MAP = "coop_epicycle_v4"	-- Change this for your server
+NEXT_MAP = "map_select_v2" -- Default to map select, feel free to change it
 
 NEXT_MAP_TIME = 10
+
+FORCE_PLAYER_RESPAWNING = true
 
 
 -- Player spawns
@@ -47,7 +49,7 @@ hook.Add( "PlayerSpawn", "hl2cPlayerSpawn", hl2cPlayerSpawn )
 
 
 -- Initialize entities
-function hl2cInitPostEntity()
+function hl2cMapEdit()
 
 	-- Gamemode Name will change here
 	GAMEMODE.Name = "[HL2C] Co-operative"
@@ -130,7 +132,7 @@ function hl2cInitPostEntity()
 	relationshipTimer:Activate()
 
 end
-hook.Add( "InitPostEntity", "hl2cInitPostEntity", hl2cInitPostEntity )
+hook.Add( "MapEdit", "hl2cMapEdit", hl2cMapEdit )
 
 
 -- Accept entity input

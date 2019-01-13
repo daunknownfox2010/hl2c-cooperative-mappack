@@ -2,7 +2,9 @@ RESET_PL_INFO = true
 
 INFO_PLAYER_SPAWN = { Vector( 0, 0, 512 ), 180 }
 
-NEXT_MAP = "gm_ghosthunt"	-- Change this for your server
+NEXT_MAP = "map_select_v2" -- Default to map select, feel free to change it
+
+FORCE_PLAYER_RESPAWNING = true
 
 
 -- Player spawns
@@ -20,7 +22,7 @@ hook.Add( "PlayerSpawn", "hl2cPlayerSpawn", hl2cPlayerSpawn )
 
 
 -- Initialize entities
-function hl2cInitPostEntity()
+function hl2cMapEdit()
 
 	-- Gamemode Name will change here
 	GAMEMODE.Name = "[HL2C] Ghost Hunt"
@@ -35,4 +37,4 @@ function hl2cInitPostEntity()
 	ents.FindByClass( "env_screenoverlay" )[ 1 ]:Remove()
 
 end
-hook.Add( "InitPostEntity", "hl2cInitPostEntity", hl2cInitPostEntity )
+hook.Add( "MapEdit", "hl2cMapEdit", hl2cMapEdit )
